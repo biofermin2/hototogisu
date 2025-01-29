@@ -1,39 +1,50 @@
-(load "~/howm/junk/utils.lisp")	       ; => T
-;; 鳴かぬなら、創ってしまえ、ホトトギス！
+;; 鳴かぬなら、創ってしまえ、ホトトギス
+(load "~/howm/junk/utils.lisp")		; =>T 
+
 (defclass animal ()
-  ((jp-name :initarg :jp-name :initform "" :accessor jp-name))) ; => #<STANDARD-CLASS COMMON-LISP-USER::ANIMAL>
+  ((name :initarg :name :initform "" :accessor name))) ; =>#<STANDARD-CLASS COMMON-LISP-USER::ANIMAL> 
 
-(defclass bird (animal)
-  ((song :initarg :song :initform "" :accessor song)
-   (en-song :initarg :en-song :initform "" :accessor en-song))) ; => #<STANDARD-CLASS COMMON-LISP-USER::BIRD>
+(defclass bird (animal)				       ; => 
+  ((song :initarg :song :initform "" :accessor song))) ; =>#<STANDARD-CLASS COMMON-LISP-USER::BIRD> 
 
-(setf lesser-cuckoo
+(defparameter lessor-cuckoo ())		; => LESSOR-CUCKOO
+
+(setf lessor-cuckoo
       (make-instance 'bird
-		     :jp-name "ホトトギス"
-		     :song "ホーホケキョ！"
-		     :en-song "tweet-tweet!")) ; => #<BIRD {1003721363}>
+		     :name "ホトトギス"
+		     :song "テッペンカケタカ、特許許可局")) ; =>#<BIRD {100C43B613}> 
 
-(setf poultry
- (make-instance 'bird
-		     :jp-name "ニワトリ"
-		     :song "コケコッコー！"
-		:en-song "cock-a-doodle-doo!")) ; => #<BIRD {10037B5093}>
+(defgeneric tweet (bird)
+  (:documentation "指定した鳥の鳴き声を発する")) ; =>#<STANDARD-GENERIC-FUNCTION COMMON-LISP-USER::TWEET (0)> 
 
-(setf raven
-      (make-instance 'bird
-		     :jp-name "カラス"
-		     :song "カァー！カァー！"
-		     :en-song "caw! caw!")) ; => #<BIRD {100384F723}>
+(defmethod tweet (bird)
+  (format t "~s" (name bird))
+  (system (concatenate 'string "echo " (song bird) "| ojtalk"))) ; =>#<STANDARD-METHOD COMMON-LISP-USER::TWEET (T) {1010E76FA3}> 
 
-(defun tweet (bird &optional (lang 'ja))
-  (format t "~s" (slot-value bird 'jp-name))
-  (cond ((eq lang 'ja)
-	 (system (concatenate 'string "echo " (slot-value bird 'song) "| ojtalk")))
-	((eq lang 'en)
-	 (system (concatenate 'string "echo " (slot-value bird 'en-song) "| flite"))))) ; => TWEET
-
-(tweet lesser-cuckoo)			; => "ホトトギス"; $ echo ホーホケキョ！| ojtalk
+(tweet lessor-cuckoo)			; =>"ホトトギス"; $ echo テッペンカケタカ、特許許可局| ojtalk
 0
-(tweet poultry 'en)			; => "ニワトリ"; $ echo cock-a-doodle-doo!| flite
-0
-(tweet raven 'en)			; => "カラス"; $ echo caw! caw!| flite
+
+
+
+
+
+
+
+
+
+
+
+
+;; (setf bird2
+;;       (make-instance 'bird
+;; 		     :name "ニワトリ"
+;;                      :en-name "poultry"
+;; 		     :song "コケコッコー！"
+;; 		     :en-song "cock-a-doodle-doo!")) ; =>#<BIRD {10110C3DB3}> 
+
+;; (setf bird3
+;;       (make-instance 'bird
+;; 		     :name "カラス"
+;;                      :en-name "raven"
+;; 		     :song "カァー！カァー！"
+;; 		     :en-song "caw! caw!")) ; =>#<BIRD {10110D21A3}> 

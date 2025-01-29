@@ -1,0 +1,45 @@
+(load "~/howm/junk/utils.lisp")		; =>T 
+
+(defclass animal ()
+  ((name :initarg :name :initform "" :accessor name)
+   (en-name :initarg :en-name :initform "" :accessor en-name ))) ; =>#<STANDARD-CLASS COMMON-LISP-USER::ANIMAL> 
+
+(defclass bird (animal)
+  ((song :initarg :song :initform "" :accessor song)
+   (en-song :initarg :en-song :initform "" :accessor en-song))) ; =>#<STANDARD-CLASS COMMON-LISP-USER::BIRD> 
+
+(defvar lessor-cuckoo)			; =>LESSOR-CUCKOO 
+
+(setf lessor-cuckoo
+      (make-instance 'bird
+		     :name "ホトトギス"
+		     :song "テッペンカケタカ、特許許可局")) ; =>#<BIRD {100F037FC3}> 
+
+
+(defmethod tweet (bird)
+  (format t "~s" (slot-value bird 'name))
+  (system (concatenate 'string "echo " (slot-value bird 'song) "| ojtalk"))) ; => 
+
+
+(tweet lessor-cuckoo)			; =>"ホトトギス"; $ echo テッペンカケタカ、特許許可局| ojtalk
+warning: output HDMI-A-0 not found; ignoring
+xrandr: Need crtc to set gamma on.
+warning: output HDMI-A-0 not found; ignoring
+xrandr: Need crtc to set gamma on.
+0 
+
+
+
+;; (setf bird2
+;;       (make-instance 'bird
+;; 		     :name "ニワトリ"
+;;                      :en-name "poultry"
+;; 		     :song "コケコッコー！"
+;; 		     :en-song "cock-a-doodle-doo!")) ; =>#<BIRD {10110C3DB3}> 
+
+;; (setf bird3
+;;       (make-instance 'bird
+;; 		     :name "カラス"
+;;                      :en-name "raven"
+;; 		     :song "カァー！カァー！"
+;; 		     :en-song "caw! caw!")) ; =>#<BIRD {10110D21A3}> 
